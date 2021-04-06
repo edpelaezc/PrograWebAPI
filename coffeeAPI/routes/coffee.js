@@ -1,5 +1,9 @@
 var express = require('express');
 var router = express.Router();
+const MongoClient = require('mongodb').MongoClient
+const assert = require('assert')
+const db = 'CoffeMongoDB'
+const client = new MongoClient(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // defining the interface for object
 let coffeeList = [];
@@ -29,9 +33,18 @@ coffeeList.push(
 
 // GET
 router.get('/', function (req, res, next) {
+    connect()
     console.log('return list of coffee');
     res.status(200).send(coffeeList);
 });
+
+function connect() {
+    client.connect(err => {
+        console.log('conected ' + process.env.DB_NAME);        
+        // perform actions on the collection object
+        client.close();
+    })
+}
 
 // GET with ID
 router.get('/:id', function (req, res, next) {
@@ -77,20 +90,20 @@ router.put('/update/:id', function (req, res, next) {
         process: req.body.process
     }
 
-    updateList(element, function(success) {        
+    updateList(element, function (success) {
         if (success) {
-            res.status(204).send('Successfully updated');            
+            res.status(204).send('Successfully updated');
         } else {
             res.status(404).send('NOT FOUND');
         }
-    });    
+    });
 });
 
 // DELETE
 router.delete('/delete/:id', function (req, res, next) {
     console.log('return list of coffee');
-    
-    exists(parseInt(req.params.id), function(elementExists) {
+
+    exists(parseInt(req.params.id), function (elementExists) {
         if (elementExists) {
             coffeeList.splice(parseInt(req.params.id) - 1, 1);
             res.status(204).send('Deleted item');
@@ -102,26 +115,26 @@ router.delete('/delete/:id', function (req, res, next) {
 
 
 function updateList(element, callback) {
-    let flag = false; 
+    let flag = false;
     coffeeList.forEach(function (item, index) {
         if (item.id == element.id) {
-            this[index] = element;            
-            flag = true;            
+            this[index] = element;
+            flag = true;
         }
-    }, coffeeList);    
-    
+    }, coffeeList);
+
     callback(flag);
     return;
 }
 
 function exists(id, callback) {
-    let flag = false; 
-    coffeeList.forEach( item => {
-        if (item.id == id) {                     
-            flag = true;            
+    let flag = false;
+    coffeeList.forEach(item => {
+        if (item.id == id) {
+            flag = true;
         }
-    });    
-    
+    });
+
     callback(flag);
     return;
 }
