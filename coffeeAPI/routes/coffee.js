@@ -10,7 +10,7 @@ router.get('/', async function (req, res, next) {
     try {
         res.status(200).send(coffees)
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).json({status: 500, message: error})
     }
 });
 
@@ -22,7 +22,7 @@ router.get('/:id', async function (req, res, next) {
     try {
         res.status(200).send(coffee)
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).json({status: 500, message: error})
     }
 });
 
@@ -35,7 +35,7 @@ router.post('/create', async function (req, res, next) {
         await coffee.save()
         res.status(200).send('Successfully created')
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).json({status: 500, message: error})
     }
 });
 
@@ -47,7 +47,7 @@ router.put('/update/:id', async function (req, res, next) {
         await coffeeModel.findByIdAndUpdate(req.params.id, req.body)        
         res.status(200).send('Successfully updated')
     } catch (error) {
-        res.status(500).send(error)        
+        res.status(500).json({status: 500, message: error})    
     }
 });
 
@@ -64,7 +64,7 @@ router.delete('/delete/:id', async function (req, res, next) {
 
         res.status(200).send()
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).json({status: 500, message: error})
     }
 });
 
