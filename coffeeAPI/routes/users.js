@@ -7,16 +7,15 @@ const confJWT = require('../conf/jwt.conf')
 
 /* GET users listing. */
 router.post('/login', async function (req, res, next) {
-  var username = req.body.username
+  var username = req.body.username  
   var password = crypto.createHash('md5').update(req.body.password).digest('hex')
   var role = req.body.role
 
   const exists = await userModel.findOne({ username: username, password: password, role: role })
-
-  console.log(exists);
+  
   if (exists) {
     let token = jwt.sign({ check: true }, confJWT.key, { expiresIn: '1h' })
-    res.status(200).json({ username: username, role: role, token: token })
+    res.status(200).json({ _id: exists._id, username: username, role: role, token: token })
   } else {
     res.status(401).send('Unauthorized')
   }
