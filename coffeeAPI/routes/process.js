@@ -14,8 +14,8 @@ router.get('/', async function (req, res, next) {
 });
 
 // GET with ID
-router.get('/:id', async function (req, res, next) {    
-    const item = await processModel.findById(req.params.id)
+router.get('/list', async function (req, res, next) {    
+    const item = await processModel.find({}, '-description -__v')
 
     try {
         res.status(200).send(item)

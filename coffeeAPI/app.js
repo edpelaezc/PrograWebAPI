@@ -12,6 +12,9 @@ var coffeeRouter = require('./routes/coffee');
 var subscriptionRouter = require('./routes/subscription');
 var processRouter = require('./routes/process')
 var methodRouter = require('./routes/method')
+var quotePriceRouter = require('./routes/quotePrice')
+var purchaseRouter = require('./routes/purchase')
+var serviceRouter = require('./routes/service')
 
 var app = express();
 
@@ -42,6 +45,9 @@ app.use('/api/v1/coffee', coffeeRouter);
 app.use('/api/v1/subscription', subscriptionRouter);
 app.use('/api/v1/process', processRouter);
 app.use('/api/v1/method', methodRouter);
+app.use('/api/v1/quotePrice', quotePriceRouter);
+app.use('/api/v1/purchase', purchaseRouter);
+app.use('/api/v1/service', serviceRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
