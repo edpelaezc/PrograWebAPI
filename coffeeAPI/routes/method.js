@@ -13,6 +13,16 @@ router.get('/', async function (req, res, next) {
     }
 });
 
+router.get('/list', async function (req, res, next) {
+    const item = await methodModel.find({}, '-description -__v')
+
+    try {
+        res.status(200).send(item)
+    } catch (error) {
+        res.status(500).json({ status: 500, message: error })
+    }
+});
+
 // GET with ID
 router.get('/:id', async function (req, res, next) {    
     const item = await methodModel.findById(req.params.id)
