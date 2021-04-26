@@ -3,8 +3,7 @@ var router = express.Router();
 const coffeeModel = require('../models/coffee')
 
 // GET
-router.get('/', async function (req, res, next) {
-    console.log('return list of coffee');
+router.get('/', async function (req, res, next) {    
     const coffees = await coffeeModel.find({});
 
     try {
@@ -16,7 +15,7 @@ router.get('/', async function (req, res, next) {
 
 // GET with ID
 router.get('/list', async function (req, res, next) {
-    const item = await coffeeModel.find({ qty: { $gte: 10 } }, '-qty -__v')
+    const item = await coffeeModel.find({ qty: { $gte: 10 } }, '-qty -__v -price')
 
     try {
         res.status(200).send(item)
@@ -32,7 +31,7 @@ router.post('/create', async function (req, res, next) {
 
     try {
         await coffee.save()
-        res.status(200).send('Successfully created')
+        res.status(200).json({ status: 200, message: 'Succesfully created' })
     } catch (error) {
         res.status(500).json({ status: 500, message: error })
     }
@@ -44,7 +43,7 @@ router.put('/update/:id', async function (req, res, next) {
     try {
         console.log(req.params.id);
         await coffeeModel.findByIdAndUpdate(req.params.id, req.body)
-        res.status(200).send('Successfully updated')
+        res.status(200).json({ status: 200, message: 'Succesfully updated' })
     } catch (error) {
         res.status(500).json({ status: 500, message: error })
     }
@@ -58,10 +57,10 @@ router.delete('/delete/:id', async function (req, res, next) {
         const coffee = await coffeeModel.findByIdAndDelete(req.params.id)
 
         if (!coffee) {
-            res.status(404).send('Not found')
+            res.status(404).json({ status: 404, message: 'Not found' })
         }
 
-        res.status(200).send()
+        res.status(200).json({ status: 200, message: 'Deleted' })
     } catch (error) {
         res.status(500).json({ status: 500, message: error })
     }
