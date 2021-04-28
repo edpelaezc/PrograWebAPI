@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
-const QuotePriceSchema = new mongoose.Schema({
-    factura: Number,
+const QuotePriceSchema = new mongoose.Schema({    
+    correo: String,
     fecha: Date,
     proceso: String,
     cantidad: Number,
