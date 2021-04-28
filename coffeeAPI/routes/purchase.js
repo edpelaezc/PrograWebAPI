@@ -38,7 +38,7 @@ router.post('/create', async function (req, res, next) {
 
         // send the mail 
         let date = new Date();
-        SendMail(order.correo, method.name, tamaño.name, totalAmount, coffeeItem.name, coffeeItem.price, tamaño.price, date.getTime(), date.toISOString())
+        SendMail(order.correo, method.name, tamaño.name, totalAmount, coffeeItem.name, coffeeItem.price, tamaño.price, date.getTime(), date.toLocaleString('es-US'))
 
         res.status(200).json({ status: 200, message: 'Succesfully created' })
     } catch (error) {
