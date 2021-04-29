@@ -6,13 +6,6 @@ const coffeeModel = require('../models/coffee')
 const methodModel = require('../models/method')
 const SendMail = require('./mail/sendPurchase')
 
-/*
-    correo: String,
-    metodo: String,        
-    tamaño: String,    
-    variedad: String,
-    total: Number
- */
 // CREATE ITEM
 router.post('/create', async function (req, res, next) {        
     try {
