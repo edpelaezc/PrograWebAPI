@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
 var cors = require('cors');
+var cookieSession = require('cookie-session')
+var passport = require('passport')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -15,6 +17,7 @@ var methodRouter = require('./routes/method')
 var quotePriceRouter = require('./routes/quotePrice')
 var purchaseRouter = require('./routes/purchase')
 var serviceRouter = require('./routes/service')
+var sessionRouter = require('./routes/session')
 
 var app = express();
 
@@ -31,12 +34,20 @@ app.use(cookieParser());
 require('dotenv-flow').config()
 
 // mongodb connection throug mongoose
-mongoose.connect(process.env.MONGODB,
-  {
+mongoose.connect(process.env.MONGODB, {
     useNewUrlParser: true,
     useFindAndModify: false,
     useUnifiedTopology: true
-  });
+});
+
+app.use(cookieSession({
+    name: 'session',
+    keys: [process.env.cookiekey1, process.env.cookiekey2],
+    maxAge: 7200000 // two hours
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // use the routes
 app.use('/api/v1/', indexRouter);
@@ -48,21 +59,23 @@ app.use('/api/v1/method', methodRouter);
 app.use('/api/v1/quotePrice', quotePriceRouter);
 app.use('/api/v1/purchase', purchaseRouter);
 app.use('/api/v1/service', serviceRouter);
+app.use('/api/v1/session', sessionRouter);
+
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
+app.use(function(req, res, next) {
+    next(createError(404));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use(function(err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.send('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.send('error');
 });
 
 module.exports = app;
