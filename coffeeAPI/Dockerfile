@@ -9,5 +9,5 @@ RUN npm install
 EXPOSE 3000
 
 # set env and run 
-#ENV NODE_ENV=development
+ENV NODE_ENV development
 CMD ["node", "/app/bin/www"]
