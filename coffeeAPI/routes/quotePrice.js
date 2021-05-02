@@ -29,7 +29,7 @@ router.post('/create', async function (req, res, next) {
         await item.save()        
 
         // send the mail 
-        SendMail(item._id, quote.correo, proceso.name, quote.cantidad, variedad.name, variedad.price, dtFecha.getTime(), dtFecha.toLocaleString('es-US'), total)
+        SendMail(item._id, quote.correo, proceso.name, quote.cantidad, variedad.name, variedad.price, dtFecha.getTime(), dtFecha.toLocaleString('es-US'), total, process.env.BASE_URL)
 
         res.status(200).json({ status: 200, message: 'Succesfully created' })
     } catch (error) {
