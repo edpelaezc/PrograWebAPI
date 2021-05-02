@@ -31,7 +31,7 @@ passport.deserializeUser(function(user, done) {
 var microsoftStrategy = new MicrosoftStrategy({
         clientID: 'acbe9f27-c9cc-4ae7-81f7-e8f5fc18d787',
         clientSecret: '9vO4GffjhWO_~dLY~E-GVR6UT9J1-yR6vC',
-        callbackURL: 'http://localhost:3000/api/v1/session/auth/microsoft/callback',
+        callbackURL: process.env.callbackURL,
         scope: scope.split(',')
     },
     function(accessToken, refreshToken, profile, done) {
